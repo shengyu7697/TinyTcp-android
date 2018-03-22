@@ -54,7 +54,6 @@ public class TinyTcpServer {
                     }
 
                     InputStream inputStream = mSocket.getInputStream();
-
                     while (true) {
                         String text;
                         if ((bytesRead = inputStream.read(byteBuffer.array())) == -1)
@@ -111,9 +110,6 @@ public class TinyTcpServer {
     public void setOnConnect(Handler h) { onConnect = h; }
     public void setOnDisconnect(Handler h) { onDisconnect = h; }
     public void setOnRecv(Handler h) { onRecv = h; }
-    synchronized String getData()
-    {
-        return mData;
-    }
+    synchronized String getData() { return mData; }
     synchronized void setData(String data) { mData = data; }
 }
