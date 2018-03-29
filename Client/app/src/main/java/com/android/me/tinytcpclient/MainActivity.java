@@ -1,4 +1,4 @@
-package com.android.me.tinytcpserver;
+package com.android.me.tinytcpclient;
 
 import android.os.Handler;
 import android.os.Message;
@@ -17,8 +17,9 @@ public class MainActivity extends AppCompatActivity {
     private Button button3;
     private Button button4;
     private EditText editText1;
+    private EditText editText2;
     private TextView text1;
-    private final TinyTcpServer tts = new TinyTcpServer();
+    private final TinyTcpClient ttc = new TinyTcpClient();
     private Handler onConnect = null;
     private Handler onDisconnect = null;
     private Handler onRecv = null;
@@ -33,39 +34,43 @@ public class MainActivity extends AppCompatActivity {
         button2 = (Button)findViewById(R.id.button2); // send
         button3 = (Button)findViewById(R.id.button3); // stop
         button4 = (Button)findViewById(R.id.button4); // clear
-        editText1 = (EditText)findViewById(R.id.editText1); // port
+        editText1 = (EditText)findViewById(R.id.editText1); // hostname
+        editText2 = (EditText)findViewById(R.id.editText2); // port
         text1 = (TextView)findViewById(R.id.textView1);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int port = Integer.parseInt(editText1.getText().toString());
-                tts.start(port);
-                updateChatText("bind on port: " + port);
+                String hostname = editText1.getText().toString();
+                int port = Integer.parseInt(editText2.getText().toString());
+                ttc.start(hostname, port);
+                updateChatText("connect to " + hostname + ":" + port);
                 button1.setEnabled(false);
                 button2.setEnabled(true);
                 button3.setEnabled(true);
                 button4.setEnabled(true);
                 editText1.setEnabled(false);
+                editText2.setEnabled(false);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str = "Hello";
-                tts.send(str);
+                String str = "Hello Server";
+                ttc.send(str);
                 updateChatText(str);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tts.stop();
+                ttc.stop();
                 button1.setEnabled(true);
                 button2.setEnabled(false);
                 button3.setEnabled(false);
                 button4.setEnabled(false);
                 editText1.setEnabled(true);
+                editText2.setEnabled(true);
             }
         });
         button4.setOnClickListener(new View.OnClickListener() {
@@ -100,26 +105,27 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
-                        updateChatText(tts.getData());
+                        updateChatText(ttc.getData());
                         break;
                 }
             }
         };
 
-        tts.setOnConnect(onConnect);
-        tts.setOnDisconnect(onDisconnect);
-        tts.setOnRecv(onRecv);
+        ttc.setOnConnect(onConnect);
+        ttc.setOnDisconnect(onDisconnect);
+        ttc.setOnRecv(onRecv);
 
         button1.setEnabled(true);
         button2.setEnabled(false);
         button3.setEnabled(false);
         button4.setEnabled(false);
         editText1.setEnabled(true);
+        editText2.setEnabled(true);
     }
 
     @Override
     protected void onDestroy() {
-        tts.stop();
+        ttc.stop();
         super.onDestroy();
     }
 
