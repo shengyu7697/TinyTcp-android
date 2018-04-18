@@ -23,7 +23,7 @@ public class TinyTcpClient {
     public TinyTcpClient() {
     }
 
-    void start(String ipAddress, int port)
+    public void start(String ipAddress, int port)
     {
         Log.d(TAG, "start");
 
@@ -76,7 +76,7 @@ public class TinyTcpClient {
         }
     };
 
-    void stop()
+    public void stop()
     {
         Log.d(TAG, "stop");
         try {

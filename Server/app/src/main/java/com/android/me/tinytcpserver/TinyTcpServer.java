@@ -23,7 +23,7 @@ public class TinyTcpServer {
     public TinyTcpServer() {
     }
 
-    void start(int port)
+    public void start(int port)
     {
         Log.d(TAG, "start");
 
@@ -79,7 +79,7 @@ public class TinyTcpServer {
         }
     };
 
-    void stop()
+    public void stop()
     {
         Log.d(TAG, "stop");
         try {
