@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText1;
     private EditText editText2;
     private TextView text1;
-    private final TinyTcpClient ttc = new TinyTcpClient();
+    private final TinyTcpClient tc = new TinyTcpClient();
     private Handler onConnect = null;
     private Handler onDisconnect = null;
     private Handler onRecv = null;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String hostname = editText1.getText().toString();
                 int port = Integer.parseInt(editText2.getText().toString());
-                ttc.start(hostname, port);
+                tc.start(hostname, port);
                 updateChatText("connect to " + hostname + ":" + port);
                 button1.setEnabled(false);
                 button2.setEnabled(true);
@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String str = "Hello Server";
-                ttc.send(str);
+                tc.send(str);
                 updateChatText(str);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ttc.stop();
+                tc.stop();
                 button1.setEnabled(true);
                 button2.setEnabled(false);
                 button3.setEnabled(false);
@@ -105,15 +105,15 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
-                        updateChatText(ttc.getData());
+                        updateChatText(tc.getData());
                         break;
                 }
             }
         };
 
-        ttc.setOnConnect(onConnect);
-        ttc.setOnDisconnect(onDisconnect);
-        ttc.setOnRecv(onRecv);
+        tc.setOnConnect(onConnect);
+        tc.setOnDisconnect(onDisconnect);
+        tc.setOnRecv(onRecv);
 
         button1.setEnabled(true);
         button2.setEnabled(false);
@@ -125,18 +125,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        ttc.stop();
+        tc.stop();
         super.onDestroy();
     }
 
-    void updateChatText(String str)
-    {
+    void updateChatText(String str) {
         mText += str + "\n";
         text1.setText(mText);
     }
 
-    void clearChatText()
-    {
+    void clearChatText() {
         mText = "";
         text1.setText(mText);
     }

@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button4;
     private EditText editText1;
     private TextView text1;
-    private final TinyTcpServer tts = new TinyTcpServer();
+    private final TinyTcpServer ts = new TinyTcpServer();
     private Handler onConnect = null;
     private Handler onDisconnect = null;
     private Handler onRecv = null;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int port = Integer.parseInt(editText1.getText().toString());
-                tts.start(port);
+                ts.start(port);
                 updateChatText("bind on port: " + port);
                 button1.setEnabled(false);
                 button2.setEnabled(true);
@@ -53,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String str = "Hello";
-                tts.send(str);
+                ts.send(str);
                 updateChatText(str);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tts.stop();
+                ts.stop();
                 button1.setEnabled(true);
                 button2.setEnabled(false);
                 button3.setEnabled(false);
@@ -100,15 +100,15 @@ public class MainActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
-                        updateChatText(tts.getData());
+                        updateChatText(ts.getData());
                         break;
                 }
             }
         };
 
-        tts.setOnConnect(onConnect);
-        tts.setOnDisconnect(onDisconnect);
-        tts.setOnRecv(onRecv);
+        ts.setOnConnect(onConnect);
+        ts.setOnDisconnect(onDisconnect);
+        ts.setOnRecv(onRecv);
 
         button1.setEnabled(true);
         button2.setEnabled(false);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        tts.stop();
+        ts.stop();
         super.onDestroy();
     }
 

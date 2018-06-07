@@ -23,8 +23,7 @@ public class TinyTcpClient {
     public TinyTcpClient() {
     }
 
-    public void start(String ipAddress, int port)
-    {
+    public void start(String ipAddress, int port) {
         Log.d(TAG, "start");
 
         mIpAddress = ipAddress;
@@ -76,8 +75,7 @@ public class TinyTcpClient {
         }
     };
 
-    public void stop()
-    {
+    public void stop() {
         Log.d(TAG, "stop");
         try {
             mSocket.close();
@@ -87,8 +85,7 @@ public class TinyTcpClient {
         }
     }
 
-    public void send(final String data)
-    {
+    public void send(final String data) {
         new Thread(new Runnable() {
             @Override
             public void run() {
