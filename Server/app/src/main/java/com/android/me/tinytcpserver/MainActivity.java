@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText1;
     private TextView text1;
     private final TinyTcpServer ts = new TinyTcpServer();
+    //private final TinyUdpServer ts = new TinyUdpServer();
     private Handler onConnect = null;
     private Handler onDisconnect = null;
     private Handler onRecv = null;
@@ -99,7 +100,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case 0:
+                    case 0: // tcp
+                        updateChatText(ts.getData());
+                        break;
+                    case 1: // udp
                         updateChatText(ts.getData());
                         break;
                 }
